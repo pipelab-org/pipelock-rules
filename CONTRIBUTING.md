@@ -4,7 +4,7 @@ Rules are welcome via pull request. Each rule must meet the quality bar below be
 
 ## Prerequisites
 
-- [Pipelock](https://github.com/luckyPipewrench/pipelock) v1.4.0+ (for `make validate`)
+- [Pipelock](https://github.com/pipelab-org/pipelock) v1.4.0+ (for `make validate`)
 - Bash (for `make compile` and `make test-fixtures`)
 - A regex that works with Go's RE2 engine (no lookahead/lookbehind, no backreferences)
 
@@ -155,4 +155,4 @@ By submitting a pull request, you agree that your contributions are licensed und
 
 ## Security
 
-If a regex could be exploited for ReDoS or other abuse, use the [security advisory process](https://github.com/luckyPipewrench/pipelock/security/advisories). See [SECURITY.md](SECURITY.md) for details.
+If a regex could be exploited for ReDoS or other abuse, use the [security advisory process](https://github.com/pipelab-org/pipelock/security/advisories). See [SECURITY.md](SECURITY.md) for details.

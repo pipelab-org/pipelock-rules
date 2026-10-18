@@ -3,15 +3,15 @@
 </h1>
 
 <p align="center">
-  Signed, versioned detection rules for <a href="https://github.com/luckyPipewrench/pipelock">Pipelock</a>, the open-source agent firewall.
+  Signed, versioned detection rules for <a href="https://github.com/pipelab-org/pipelock">Pipelock</a>, the open-source agent firewall.
 </p>
 
 <p align="center">
-  <a href="https://github.com/luckyPipewrench/pipelock-rules/actions/workflows/ci.yaml"><img src="https://github.com/luckyPipewrench/pipelock-rules/actions/workflows/ci.yaml/badge.svg" alt="CI"></a>
-  <a href="https://github.com/luckyPipewrench/pipelock-rules/actions/workflows/codeql.yaml"><img src="https://github.com/luckyPipewrench/pipelock-rules/actions/workflows/codeql.yaml/badge.svg" alt="CodeQL"></a>
-  <a href="https://github.com/luckyPipewrench/pipelock-rules/actions/workflows/pipelock.yaml"><img src="https://github.com/luckyPipewrench/pipelock-rules/actions/workflows/pipelock.yaml/badge.svg" alt="Pipelock Security Scan"></a>
-  <a href="https://scorecard.dev/viewer/?uri=github.com/luckyPipewrench/pipelock-rules"><img src="https://api.scorecard.dev/projects/github.com/luckyPipewrench/pipelock-rules/badge" alt="OpenSSF Scorecard"></a>
-  <a href="https://github.com/luckyPipewrench/pipelock"><img src="https://img.shields.io/badge/tested_with_Pipelock-v3.6.0-00e5a0?labelColor=0e0e11" alt="Tested with Pipelock v3.6.0"></a>
+  <a href="https://github.com/pipelab-org/pipelock-rules/actions/workflows/ci.yaml"><img src="https://github.com/pipelab-org/pipelock-rules/actions/workflows/ci.yaml/badge.svg" alt="CI"></a>
+  <a href="https://github.com/pipelab-org/pipelock-rules/actions/workflows/codeql.yaml"><img src="https://github.com/pipelab-org/pipelock-rules/actions/workflows/codeql.yaml/badge.svg" alt="CodeQL"></a>
+  <a href="https://github.com/pipelab-org/pipelock-rules/actions/workflows/pipelock.yaml"><img src="https://github.com/pipelab-org/pipelock-rules/actions/workflows/pipelock.yaml/badge.svg" alt="Pipelock Security Scan"></a>
+  <a href="https://scorecard.dev/viewer/?uri=github.com/pipelab-org/pipelock-rules"><img src="https://api.scorecard.dev/projects/github.com/pipelab-org/pipelock-rules/badge" alt="OpenSSF Scorecard"></a>
+  <a href="https://github.com/pipelab-org/pipelock"><img src="https://img.shields.io/badge/tested_with_Pipelock-v3.6.0-00e5a0?labelColor=0e0e11" alt="Tested with Pipelock v3.6.0"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-Apache_2.0-00e5a0?labelColor=0e0e11" alt="License: Apache 2.0"></a>
   <a href="https://discord.gg/badNfhGKTc"><img src="https://img.shields.io/badge/Discord-Join-5865F2?logo=discord&logoColor=white&labelColor=0e0e11" alt="Discord"></a>
 </p>
@@ -158,7 +158,7 @@ pipelock rules install --path ./my-bundle/ --allow-unsigned
 pipelock rules list
 ```
 
-See the [full bundle authoring guide](https://github.com/luckyPipewrench/pipelock/blob/main/docs/rules.md#creating-your-own-bundle) for the YAML schema, signing, distribution, and trust model.
+See the [full bundle authoring guide](https://github.com/pipelab-org/pipelock/blob/main/docs/rules.md#creating-your-own-bundle) for the YAML schema, signing, distribution, and trust model.
 
 ## Compatibility contract
 
@@ -208,7 +208,7 @@ scripts/test-fixtures.sh     Runs every regex against its fixtures
 - [What is an Agent Firewall?](https://pipelab.org/agent-firewall/): how Pipelock scans agent traffic
 - [Community Rules](https://pipelab.org/learn/community-rules/): install guide and rule documentation
 - [MCP Tool Poisoning](https://pipelab.org/learn/mcp-tool-poisoning/): why tool-poison rules exist
-- [Pipelock on GitHub](https://github.com/luckyPipewrench/pipelock)
+- [Pipelock on GitHub](https://github.com/pipelab-org/pipelock)
 
 ## Contributing
 

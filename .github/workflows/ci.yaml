@@ -23,7 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0  # v7.0.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
         with:
           fetch-depth: 0
           persist-credentials: false
@@ -35,7 +35,7 @@ jobs:
           cache: false
 
       - name: Check out the tested Pipelock candidate
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0  # v7.0.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
         with:
           repository: luckyPipewrench/pipelock
           ref: ${{ env.PIPELOCK_CANDIDATE_REF }}
@@ -68,7 +68,7 @@ jobs:
             version: 1.5.0
             sha256: ed6aeaf97a8928272254508d516e34e74fce4dfcfdf4a6ea1efac21b188aadc2
     steps:
-      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0  # v7.0.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
         with:
           persist-credentials: false
 
@@ -121,7 +121,7 @@ jobs:
     env:
       EXPECTED_OFFICIAL_PUBKEY_SHA256: ${{ vars.RULES_OFFICIAL_PUBKEY_SHA256 }}
     steps:
-      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0  # v7.0.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
         with:
           fetch-depth: 0
           persist-credentials: false
@@ -133,7 +133,7 @@ jobs:
           cache: false
 
       - name: Check out the tested Pipelock candidate
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0  # v7.0.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
         with:
           repository: luckyPipewrench/pipelock
           ref: ${{ env.PIPELOCK_CANDIDATE_REF }}
@@ -165,7 +165,9 @@ jobs:
       matrix:
         bundle: [pipelock-community, healthcare-phi-pii]
     steps:
-      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0  # v7.0.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
 
       - name: Install yamllint
         run: pip install --require-hashes -r .github/requirements-yamllint.txt

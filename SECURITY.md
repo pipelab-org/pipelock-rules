@@ -2,7 +2,7 @@
 
 ## Reporting a Vulnerability
 
-If a community rule regex could be exploited for **ReDoS** (regular expression denial of service) or other abuse, report it through the [Pipelock Security Advisory process](https://github.com/luckyPipewrench/pipelock/security/advisories/new).
+If a community rule regex could be exploited for **ReDoS** (regular expression denial of service) or other abuse, report it through the [Pipelock Security Advisory process](https://github.com/pipelab-org/pipelock/security/advisories/new).
 
 **Do NOT open a public GitHub issue for ReDoS or exploitable regex patterns.**
 

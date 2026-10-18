@@ -1,6 +1,6 @@
 # AGENTS.md: pipelock-rules Development Guide
 
-Community detection rule bundles for [Pipelock](https://github.com/luckyPipewrench/pipelock).
+Community detection rule bundles for [Pipelock](https://github.com/pipelab-org/pipelock).
 
 ## Quick Reference
 
