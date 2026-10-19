@@ -1,6 +1,6 @@
 format_version: 1
 name: pipelock-community
-version: "2026.07.0"
+version: "2026.10.0"
 author: pipelock
 description: "Community detection rules for AI agent traffic"
 homepage: "https://pipelab.org/rules/pipelock-community"
@@ -177,7 +177,7 @@ rules:
     type: injection
     status: experimental
     name: "Chinese Core Override"
-    description: "Detects prompt injection override attempts in Chinese"
+    description: "Detects prompt injection override attempts in Simplified and Traditional Chinese"
     severity: high
     confidence: high
     references:
@@ -185,7 +185,7 @@ rules:
     tags:
       - "owasp-llm:LLM01"
     pattern:
-      regex: '(?:忽略|无视|不要理会)(?:之前|以前|上面|先前)(?:的)?(?:所有)?(?:指示|指令|规则|提示)'
+      regex: '(?:忽略|忽视|忽視|无视|無視|不要理会|不要理會)[ \t\x{3000}]*(?:所有[ \t\x{3000}]*)?(?:之前|以前|上面|先前|以上|上述|前面)[ \t\x{3000}]*(?:的[ \t\x{3000}]*)?(?:所有[ \t\x{3000}]*)?(?:的[ \t\x{3000}]*)?(?:指示|指令|规则|規則|提示词|提示詞|提示语|提示語)'
 
   - id: injection-delimiter-breakout
     type: injection

@@ -9,7 +9,7 @@ until you set `rules.include_experimental: true`.
 
 ## pipelock-community
 
-Version `2026.07.0` · format 1 · needs Pipelock 1.4.0 or newer · 28 rules · author pipelock
+Version `2026.10.0` · format 1 · needs Pipelock 1.4.0 or newer · 28 rules · author pipelock
 
 ### Credentials and sensitive data (`dlp`)
 

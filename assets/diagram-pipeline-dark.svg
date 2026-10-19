@@ -22,7 +22,7 @@
   <text x="513.2" y="88" font-family="'JetBrains Mono', 'JetBrainsMono Nerd Font', 'Fira Code', ui-monospace, SFMono-Regular, Menlo, monospace" font-size="10" fill="#00e5a0" font-weight="600" letter-spacing="0.15em">3 · PROVE</text>
   <text x="513.2" y="120" font-family="Inter, system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="15" fill="#e2e8f0" font-weight="600">make test-fixtures</text>
   <path d="M 513.2 138 L 686.8 138" stroke="#ffffff" stroke-opacity="0.10" stroke-width="1" stroke-linecap="butt" fill="none"/>
-  <text x="513.2" y="164" font-family="'JetBrains Mono', 'JetBrainsMono Nerd Font', 'Fira Code', ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11.5" fill="#94a3b8">576 assertions run</text>
+  <text x="513.2" y="164" font-family="'JetBrains Mono', 'JetBrainsMono Nerd Font', 'Fira Code', ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11.5" fill="#94a3b8">605 assertions run</text>
   <text x="513.2" y="188" font-family="'JetBrains Mono', 'JetBrainsMono Nerd Font', 'Fira Code', ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11.5" fill="#94a3b8">positives must match</text>
   <text x="513.2" y="212" font-family="'JetBrains Mono', 'JetBrainsMono Nerd Font', 'Fira Code', ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11.5" fill="#94a3b8">negatives must not</text>
   <text x="513.2" y="254" font-family="'JetBrains Mono', 'JetBrainsMono Nerd Font', 'Fira Code', ui-monospace, SFMono-Regular, Menlo, monospace" font-size="10.5" fill="#00e5a0" font-weight="600">Test fixtures</text>
