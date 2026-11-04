@@ -6,8 +6,8 @@ Bundle versions are independent. Repository validation changes don't alter bundl
 
 ### 2026.10.0 (2026-10-19)
 
-- Extended Chinese override detection to Traditional Chinese spellings (`無視`, `不要理會`, `規則`, `提示詞`), the verb `忽視`/`忽视`, the scope words `以上`, `上述` and `前面`, `所有` before the scope word, and spaces, tabs or full-width spaces between words (not line breaks).
-- Narrowed the bare noun `提示` to `提示词`/`提示詞`/`提示语`/`提示語`, so installer and support text such as "可以忽略上面的提示" (a UI hint) no longer matches, and added false-positive fixtures for the rule.
+- Extended Chinese override detection to Traditional Chinese spellings (`無視`, `不要理會`, `規則`), the verb `忽視`/`忽视`, the scope words `以上`, `上述` and `前面`, `所有` before the scope word, and spaces, tabs or full-width spaces between words (not line breaks). The bare noun `提示` still matches, so hint text such as "可以忽略以上的提示訊息" matches too; that false positive is left for a separate change.
+- Added false-positive fixtures for the rule.
 
 ### 2026.07.0 (2026-07-15)
 

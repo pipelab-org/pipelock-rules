@@ -7,7 +7,7 @@ format_identities:
 bundles:
   - name: pipelock-community
     version: "2026.10.0"
-    bundle_sha256: "4ff3e4a7bbe6e858a0ac1aabe614654fe5c8e884a298c11006f35c2f3ded493c"
+    bundle_sha256: "8becd2727bf9e620ab2f8231b74d4b7eb1b5630360456d2949e922b9a2f9807d"
     format_version: 1
     min_pipelock: "1.4.0"
     tested_through_pipelock: "3.6.0"
