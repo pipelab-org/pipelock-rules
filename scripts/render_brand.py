@@ -30,8 +30,8 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 ASSET_DIR = REPO_ROOT / "assets"
 MARK = ASSET_DIR / "mark.svg"
 
-# Locked brand tokens. Source of truth is the PipeLab brand guidelines and
-# pipelab.org/.brand/colors_and_type.css; these must not drift from it.
+# Brand colors used by this repository. Keep these values consistent with the
+# diagram palette in scripts/render_diagrams.py and the asset checks.
 ACCENT = "#00e5a0"
 BG = "#09090b"
 BG_ELEVATED = "#0e0e11"
@@ -51,8 +51,7 @@ WORDMARK_LEAD = "Pipelock "
 WORDMARK_ACCENT = "Rules"
 TAGLINE = "Signed, versioned detection rules for Pipelock"
 
-# Family social-card footer. Same string, type, and position as Agent Egress
-# Bench, so the two generated cards share one attribution rather than two.
+# Attribution footer and its position on the repository's social preview card.
 CARD_FOOTER = "Apache 2.0  ·  maintained by PipeLab"
 CARD_FOOTER_X = 120
 CARD_FOOTER_Y = 566
@@ -101,13 +100,7 @@ def _text(x, y, content, *, fill, size, family=SANS, weight=400,
 
 
 def particles(count, w, h, seed=7) -> list:
-    """Deterministic particle positions. No randomness, so the file is stable.
-
-    Byte-identical algorithm and seed to the sibling benchmark repository, so
-    the two social cards carry the same field rather than two different fields
-    that merely look similar. The brand guidelines specify this treatment; see
-    section 7, Hero background.
-    """
+    """Deterministic particle positions; a fixed seed keeps generated assets stable."""
     state = seed
     points = []
     for _ in range(count):
@@ -185,12 +178,7 @@ DESCENDER = 0.21
 
 
 def lockup() -> str:
-    """Mark and wordmark on ONE line, for a header or a slide.
-
-    One line rather than stacked: a two-line wordmark beside a single mark
-    reads off-balance however it is aligned, which is the exact defect the
-    sibling benchmark repository's header had.
-    """
+    """Place the mark and a single-line wordmark together for headers and slides."""
     margin, mark_size, gap, size = 20, 96, 24, 46
     text_x = margin + mark_size + gap
     # Monospace: every glyph advances the same width, so the wordmark's extent
@@ -209,14 +197,13 @@ def lockup() -> str:
     out = _open(w, h, f"{WORDMARK} logo lockup")
     out.append(placed_mark(margin, 10, mark_size))
     # Two-tone wordmark. The accent lands on the word that distinguishes
-    # this project from its parent, matching 'Agent Egress Bench' next door.
+    # this project from Pipelock itself.
     out.append(f'  <text x="{text_x}" y="{baseline}" font-family="{MONO}" font-size="{size}" '
                f'font-weight="700" letter-spacing="{-TRACKING}em" xml:space="preserve">'
                f'<tspan fill="{TEXT}">{WORDMARK_LEAD}</tspan>'
                f'<tspan fill="{ACCENT}">{WORDMARK_ACCENT}</tspan></text>')
     # No tagline. A lockup is a mark and a wordmark; a page that uses it as a
-    # header states the tagline in text directly beneath, and a lockup carrying
-    # its own copy made the header say it twice.
+    # header states the tagline in text directly beneath, so the lockup omits it.
     out.append("</svg>")
     return "\n".join(out) + "\n"
 
@@ -229,10 +216,7 @@ def lockup_stacked() -> str:
     cannot go -- an avatar, an app icon, a centred hero -- where a horizontal
     lockup has to shrink until the wordmark is unreadable.
 
-    The rule against stacking still holds where it was aimed: it forbids
-    breaking the WORDMARK across two lines beside a mark. Here the wordmark
-    stays on one line and the mark sits above it, which is the form Pipelock's
-    own logo already takes.
+    The wordmark stays on one line; only the mark moves above it.
     """
     w, h = 420, 252
     out = _open(w, h, f"{WORDMARK} stacked logo")
@@ -254,10 +238,7 @@ def social_preview() -> str:
     """
     w, h = 1280, 640
     out = _open(w, h, f"{WORDMARK}: {TAGLINE}")
-    # The brand hero treatment, section 7 of the guidelines: teal and purple
-    # radials with a particle network over near-black. Same gradient stops and
-    # the same field as the sibling benchmark card, so the two read as one
-    # family rather than two projects that both happen to be dark.
+    # Teal and purple radial gradients sit behind a deterministic particle field.
     out.append(
         '  <defs>'
         '<radialGradient id="teal" cx="30%" cy="20%" r="55%">'
@@ -274,19 +255,11 @@ def social_preview() -> str:
     out.append(f'  <rect width="{w}" height="{h}" fill="url(#purple)"/>')
     out += particle_field(w, h)
 
-    # No accent rule across the top. The sibling benchmark card has none, and on
-    # a card that bleeds to the edge it reads as a stray browser chrome line
-    # rather than as brand.
+    # Keep the card edge clear of a horizontal accent line.
 
     out.append(placed_mark(112, 188, 264))
 
-    # Scale, not weight. This and the lockup have always used the same font at
-    # 700; the lockup simply gave its wordmark a third of the frame height while
-    # the card gave it a tenth, so the lockup read as the bolder of the two. At
-    # 86 the name carries the card the way it carries the lockup.
-    #
-    # Accent lands on the word that distinguishes THIS project, which is the
-    # rule the sibling repositories follow: "Agent Egress Bench", "Pipelock Rules".
+    # Use the lockup's font weight and emphasize Rules with the accent color.
     out.append(f'  <text x="452" y="300" font-family="{MONO}" font-size="86" '
                f'font-weight="700" letter-spacing="-0.025em" xml:space="preserve">'
                f'<tspan fill="{TEXT}">{WORDMARK_LEAD}</tspan>'
@@ -319,11 +292,9 @@ ASSETS = {
 
 # Rasters exported from the vectors above by `make brand`.
 #
-# Every size a consumer has asked for is listed here rather than exported by
-# hand into whatever tool needed it. A hand export is how a logo ends up as a
-# mark stranded in the corner of a canvas: it looks fine in the exporter and
-# renders as a blank square everywhere else, and nothing catches it because the
-# file exists and has plausible bytes.
+# Every raster size is listed here and exported from the vectors, so a size
+# can't exist without a recorded source. A hand export can look correct in one
+# tool and render blank elsewhere, and a file check can't tell the difference.
 ICON_SIZES = (16, 32, 48, 64, 128, 256, 512, 1024)
 ICO_SIZES = (16, 32, 48, 64, 128, 256)
 ICO_NAME = "icons/pipelock-rules.ico"
@@ -482,7 +453,7 @@ def brand_problems() -> list:
         if not (workflows / referenced).is_file():
             problems.append(f"README: badges {referenced}, which is not in .github/workflows/")
 
-    # The family footer is a contract with the sibling card, not decoration.
+    # Check that the social card retains its attribution footer and position.
     card = social_preview()
     if CARD_FOOTER not in card:
         problems.append("social-preview: missing the family footer line")
@@ -572,16 +543,10 @@ def _write_ico(pngs: list[Path], target: Path) -> None:
 
 
 def render_rasters() -> int:
-    """Export every raster from its vector and record where it came from.
+    """Export the sizes in PNG_EXPORTS and record each raster's source digest.
 
-    The size map lives in PNG_EXPORTS and nowhere else. It used to be repeated
-    as literal inkscape lines in the Makefile, which meant adding a size in one
-    place and silently not exporting it from the other.
-
-    Both renderers are resolved before anything is written. Finding ImageMagick
-    missing only at the bundling step would leave every PNG already overwritten
-    and no icon bundle beside them, which is a worse state to land in than
-    refusing at the start.
+    Resolve Inkscape and ImageMagick before writing to avoid partial exports
+    when a required renderer is unavailable.
     """
     _require_tool("inkscape", "export rasters")
     _require_tool("magick", "build the icon bundle", alternative="convert")

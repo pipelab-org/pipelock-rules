@@ -101,9 +101,9 @@ pipelock rules install --source "$base/pipelock-community-bundle.yaml" pipelock-
 
 **healthcare-phi-pii** is a healthcare DLP bundle contributed by BGASoft, Inc. It covers the regex-detectable entries from HIPAA Safe Harbor's 18 identifiers, financial PII, and clinical laboratory identifiers.
 
-Every rule, with what it detects, its severity, and its primary source, is listed in the [rule catalog](docs/rule-catalog.md). That page is generated from the compiled bundles, so it cannot fall behind them.
+The [rule catalog](docs/rule-catalog.md) lists every rule in every published bundle, with its severity and primary source where present. `make diagrams` generates it from the compiled bundles, and `make check-diagrams` detects a committed catalog that no longer matches them.
 
-Stable rules are enabled by default. Experimental rules are not, because they carry only true-positive fixtures and may fire on traffic you consider benign. Turn them on when you want the wider net:
+Stable rules are enabled by default. Experimental rules aren't: they need true-positive fixtures but may lack false-positive ones, so they can fire on traffic you consider benign. Enable them when you want to include those rules:
 
 ```yaml
 rules:
@@ -117,7 +117,7 @@ rules:
   <img alt="A rule moves from an authored file through compile, fixture proof, schema validation, and signing before an operator can install it" src="assets/diagram-pipeline-light.svg">
 </picture>
 
-The point of the pipeline is that a rule's claims are executable. A regex that matches nothing, or that matches ordinary traffic, fails before review ever sees it.
+Fixture tests require each rule to match its true-positive examples and, for stable rules, to reject its false-positive examples. Fixtures can't cover every input, so review also considers traffic they don't represent.
 
 ## Anatomy of a rule
 
@@ -162,7 +162,7 @@ See the [full bundle authoring guide](https://github.com/pipelab-org/pipelock/bl
 
 ## Compatibility contract
 
-The maintained bundles are tested from their declared `min_pipelock` through Pipelock `3.6.0`. A newer Pipelock release sits outside this tested range. It should warn and continue unless it can't read the bundle format. Pipelock `3.5.0` doesn't expose that warning yet, so `compatibility/contract.yaml` records the tested ceiling until a product update adds it.
+CI tests each maintained bundle with the declared `min_pipelock` release and with a Pipelock build that reports the `tested_through_pipelock` version recorded in `compatibility/contract.yaml`. The matrix doesn't individually test every version between those endpoints. A newer Pipelock version is outside this repository's recorded tested range. The compatibility contract records that range; it doesn't establish whether the running Pipelock version emits a warning about it.
 
 The contract binds each published bundle's name, CalVer, minimum version, and `format_version` to a SHA-256-pinned reader-schema identity. The two bundles named in the contract add detections. They don't carry per-rule allow or block actions, and they can't replace built-in patterns. Format 1 has no monotonic rollback counter. The installer refuses a same-version digest change.
 
@@ -186,11 +186,11 @@ make test-fixtures
 # Re-render the README diagrams and the rule catalog from the live bundles
 make diagrams
 
-# Everything CI runs locally, for every published bundle
+# Check diagrams, brand assets, compatibility, validation and fixtures for every maintained bundle
 make preflight
 ```
 
-`make preflight` requires a Pipelock CLI on your PATH. It never downloads one, so a missing binary is a clear prerequisite failure rather than a silently skipped schema check.
+See [CONTRIBUTING.md](CONTRIBUTING.md#prerequisites) for prerequisites and the complete rule-change sequence. Preflight needs the Pipelock version core recorded in `compatibility/contract.yaml` and doesn't download a CLI. Missing tools fail the check. YAML lint, published-signature verification and version-history checks run separately in CI.
 
 ### Repository layout
 

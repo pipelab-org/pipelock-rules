@@ -154,9 +154,7 @@ class WellFormedTest(unittest.TestCase):
         for path, content in generator.svg_assets().items():
             with self.subTest(asset=path.name):
                 colors = set(re.findall(r"#[0-9a-f]{6}\b", content.lower()))
-                # Without this the regex could match nothing and the subset
-                # check below would pass while proving nothing, which is how
-                # the same gate shipped vacuous on a sibling repository.
+                # Require at least one color match so the subset check is meaningful.
                 self.assertTrue(colors, f"{path.name}: the color scan matched nothing")
                 self.assertTrue(colors <= approved, colors - approved)
 
@@ -174,11 +172,9 @@ class PatternSecrecyTest(unittest.TestCase):
     def _every_regex(self) -> list:
         """Every rule pattern in the corpus, read by the production generator.
 
-        The previous version searched the source text for `regex: \'...\'` at a
-        fixed indent. That matches how every rule happens to be written today,
-        which is exactly why it was risky: a double-quoted or block-scalar
-        pattern would be skipped silently and the check would go partial without
-        reporting anything. Parsing sees a pattern however it is quoted.
+        Parsing sees a pattern however it is quoted. Searching source text at a
+        fixed indent would skip a double-quoted or block-scalar pattern without
+        reporting anything.
         """
         return [(rule["id"], generator.regex_of(rule))
                 for bundle in generator.BUNDLES
@@ -218,11 +214,8 @@ class PatternSecrecyTest(unittest.TestCase):
                     self.assertNotIn(pattern, content)
 
     def test_no_asset_emits_a_long_run_of_digits(self):
-        # Binary floating point printed a card width of 209.6 as the coordinate
-        # 948.4000000000001. Sixteen digits in a row inside a path matched this
-        # repository's own Credit Card Number DLP rule, so the diagram failed
-        # the Pipelock scan on its own pull request. Coordinates are rounded at
-        # the source; this holds the whole asset to it.
+        # Long floating-point tails can resemble credential data to content scans.
+        # Check emitted coordinates as well as the rounding helper.
         seen = 0
         for path, content in generator.svg_assets().items():
             for token in re.findall(r"-?\d+\.\d+", content):
@@ -434,9 +427,8 @@ class BundleAgreementTest(unittest.TestCase):
         """Two digests leave a reader unable to tell which belongs to the key.
 
         The fixture writes both digests out rather than pointing at a file that
-        happens to contain some. An earlier version swapped in this test module
-        on the assumption it held two, and it holds none, so the test passed by
-        exercising the no-digest branch instead of the one it is named for.
+        happens to contain some, so the test reaches the two-digest branch
+        instead of the no-digest branch.
         """
         first, second = "a" * 64, "b" * 64
         with tempfile.TemporaryDirectory() as directory:
@@ -455,7 +447,7 @@ class BundleAgreementTest(unittest.TestCase):
                 self.assertEqual(generator.readme_key_digest(), only)
 
     def test_a_readme_with_no_digest_pins_nothing(self):
-        """And the zero case, which is what the two-digest test used to cover."""
+        """And the zero case, so the no-digest branch has its own test."""
         with tempfile.TemporaryDirectory() as directory:
             readme = Path(directory) / "README.md"
             readme.write_text("no digest here\n", encoding="utf-8")
@@ -512,10 +504,8 @@ class BundleAgreementTest(unittest.TestCase):
         self.assertTrue(set(generator.BUNDLES) <= generator.makefile_preflight_bundles())
 
     def test_a_readme_that_stops_linking_the_catalog_is_reported(self):
-        # Written for the purpose rather than borrowed from the repository. An
-        # earlier version swapped in CONTRIBUTING.md, which then gained a link
-        # to the catalog, and the test stopped exercising the missing-link case
-        # without anything failing to say so.
+        # Use a dedicated document with no catalog link so unrelated docs can't
+        # accidentally satisfy the missing-link test.
         with tempfile.TemporaryDirectory() as directory:
             readme = Path(directory) / "README.md"
             readme.write_text("A README that links no catalog.\n", encoding="utf-8")
@@ -579,9 +569,7 @@ class LiveNumbersTest(unittest.TestCase):
         self.assertAlmostEqual(wide / narrow, big / small, delta=0.01)
 
     def test_the_coverage_chart_absorbs_a_third_bundle(self):
-        # The repository has held exactly two bundles for its whole life, which
-        # is how a fixed two-panel layout survives review looking correct. A
-        # third has to land in a new row without clipping or overlapping.
+        # A third bundle must occupy a new row without clipping or overlap.
         extra = "future-bundle"
         matrices = {b: generator.bundle_matrix(b) for b in generator.BUNDLES}
         matrices[extra] = {t: {"stable": 2, "experimental": 1} for t in generator.RULE_TYPES}
@@ -642,8 +630,7 @@ class LiveNumbersTest(unittest.TestCase):
         self.assertIn(generator.official_key_digest()[:16], text)
 
     def test_pipeline_body_lines_fit_inside_their_card(self):
-        # Mono advances at about 0.6em, so a longer line runs past the card
-        # edge and into the next stage's arrow. This is how that shipped once.
+        # Monospace glyphs advance about 0.6em; limit body lines to the card width.
         for _, _, _, lines in generator.pipeline_stages():
             for line in lines:
                 with self.subTest(line=line):
@@ -698,8 +685,7 @@ class CommittedAssetTest(unittest.TestCase):
                 self.assertIn(f"assets/diagram-{name}-light.svg", self.readme)
 
     def test_the_readme_uses_the_brand_casing(self):
-        # PipeLab is the company and Pipelock is the product; the design system
-        # calls the casing non-negotiable and the live site follows it.
+        # Public names use PipeLab for the company and Pipelock for the product.
         self.assertNotRegex(self.readme, r"\bPipelab\b")
         self.assertNotRegex(self.readme, r"\bPipeLock\b")
         self.assertNotRegex(self.readme, r"\bpipeLock\b")

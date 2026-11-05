@@ -12,8 +12,8 @@ Which rule is affected? (e.g. `dlp-perplexity-api-key`)
 **Problem**
 Is this a false positive (matches something it shouldn't) or a false negative (misses something it should catch)?
 
-**Test string**
-The string that was incorrectly matched or missed:
+**Synthetic test string**
+Provide a nonfunctional example that reproduces the incorrect match or miss. Use fabricated personal or health data and synthetic credentials. Report exploitable bypasses privately as described in SECURITY.md.
 
 ```
 paste test string here
@@ -26,4 +26,4 @@ Should this string match or not?
 From `pipelock --version`.
 
 **Additional context**
-Relevant config, bundle version, or context about where the string appeared.
+Bundle version and relevant configuration or surrounding text. Remove secrets, private addresses and identifying records before posting.
