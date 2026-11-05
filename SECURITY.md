@@ -1,42 +1,23 @@
-# Security Policy
+# Security policy
 
-## Reporting a Vulnerability
+## Reporting a vulnerability
 
-If a community rule regex could be exploited for **ReDoS** (regular expression denial of service) or other abuse, report it through the [Pipelock Security Advisory process](https://github.com/pipelab-org/pipelock/security/advisories/new).
+Report exploitable detection bypasses, resource-exhaustion behavior, signature-verification bypasses and rule-distribution supply-chain attacks through [Pipelock Security Advisories](https://github.com/pipelab-org/pipelock/security/advisories/new). Reports with security impact belong there before public disclosure, including false negatives that enable an exploitable bypass.
 
-**Do NOT open a public GitHub issue for ReDoS or exploitable regex patterns.**
+Ordinary false positives, non-exploitable detection gaps and rule-quality suggestions can use the public issue templates. If you're unsure whether a report exposes a vulnerability, start with a private advisory.
 
-For false negatives (a rule fails to detect a real secret or injection pattern), open a regular issue using the "Rule Evasion / ReDoS" template.
+Include the affected rule ID, bundle and Pipelock versions, a description of the behavior, a synthetic reproduction and a suggested fix if you have one. Public examples must use nonfunctional credentials and fabricated personal or health data. Remove secrets, private addresses and identifying records from configuration excerpts and logs.
 
-Include:
-- Rule ID affected
-- Description of the bypass or exploit
-- Test string demonstrating the issue
-- Suggested fix (if any)
+The rule checker uses Go's regexp package with RE2 syntax. Report excessive resource use with a bounded reproduction and observed results; catastrophic backtracking isn't the execution model used by this checker.
 
-## Response Timeline
+## Response timeline
 
-- **Acknowledgment:** Within 48 hours
-- **Initial assessment:** Within 1 week
-- **Fix and disclosure:** Coordinated with reporter, typically within 30 days
+- Acknowledgment: within 48 hours
+- Initial assessment: within 1 week
+- Fix and disclosure: coordinated with the reporter, typically within 30 days
 
-## Scope
-
-The following are in scope for security advisories:
-
-- ReDoS patterns that cause catastrophic backtracking
-- Regex patterns that match sensitive data they shouldn't (false positives causing information disclosure)
-- Signature verification bypass in bundle signing
-- Supply chain attacks via rule bundle distribution
-
-The following are regular issues (not security advisories):
-
-- False negatives (rule misses a real threat)
-- False positives (rule matches benign content)
-- Rule quality improvements
-
-## Supported Versions
+## Supported versions
 
 | Version | Supported |
 |---------|-----------|
-| 2026.x  | Yes       |
+| 2026.x | Yes |

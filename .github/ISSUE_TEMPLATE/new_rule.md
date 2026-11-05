@@ -13,7 +13,7 @@ DLP, injection, or tool-poison?
 Describe the credential format, injection technique, or tool poisoning pattern.
 
 **Example match**
-A realistic string that should trigger the rule:
+A synthetic, nonfunctional string that should trigger the rule. Use fabricated personal or health data rather than copying a real record or credential.
 
 ```
 paste example here

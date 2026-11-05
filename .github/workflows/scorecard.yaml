@@ -40,21 +40,6 @@ jobs:
           retention-days: 5
 
 
-      # Scorecard results are NOT uploaded to code scanning, deliberately.
-      #
-      # Scorecard grades repository practice: pinned dependencies, branch
-      # protection, what share of pull requests carried an approving review.
-      # Code scanning is the surface for defects in this repository's code, and
-      # routing a grade into it files each check as a dismissible alert with a
-      # severity attached.
-      #
-      # Those alerts also do not stay dismissed. GitHub matches results across
-      # uploads by rule and fingerprint, and a Scorecard result whose identity
-      # shifts arrives as a NEW alert that a previous dismissal does not cover.
-      # The outcome was a standing queue of security-labelled items that no code
-      # change could close.
-      #
-      # The results remain public and retrievable: publish_results above sends
-      # them to the OpenSSF Scorecard API that backs the badge and the public
-      # viewer, and the artifact above keeps the raw SARIF. This narrows where
-      # the grade is displayed. It does not withhold it.
+      # Publish repository-practice scores through the Scorecard API and retain
+      # raw SARIF as an artifact. Keep code-scanning alerts for code defects;
+      # repeated score uploads can otherwise create alerts with changing identities.

@@ -81,10 +81,8 @@ jobs:
                 printf 'release: FAIL - %s must contain bundle.yaml and bundle.yaml.sig\n' "$bundle_dir" >&2
                 exit 1
               fi
-              # Collect every matching line and require exactly one non-empty
-              # value. Reading into a scalar hid a duplicate declaration whose
-              # empty value sorted last, because command substitution strips
-              # trailing newlines and the result then looked single-valued.
+              # Require exactly one non-empty version declaration before naming
+              # release assets or describing the bundle version.
               versions=()
               mapfile -t versions < <(sed -n 's/^version: "\([^"]*\)"$/\1/p' "$bundle_file")
               if (( ${#versions[@]} != 1 )) || [[ -z "${versions[0]}" ]]; then
