@@ -50,7 +50,7 @@ Changing brand assets also needs Inkscape and ImageMagick (`magick` or `convert`
 
 Open an issue first so naming, scope, signing-key alignment, and maintenance ownership can be confirmed before code is added. New bundles must use `format_version: 2`, which requires Pipelock v2.2.0 or later. The existing `pipelock-community` and `healthcare-phi-pii` bundles remain on `format_version: 1` until their bundle content, signatures, served copies, and compatibility checks can migrate together.
 
-A new bundle needs compiler, validation and CI integration as well as rule files. Add a bundle-specific case and header emission in `scripts/compile.sh` that produces the complete format-2 header shown below. `make compile` overwrites the selected `published/<bundle-name>/bundle.yaml`; it doesn't preserve a hand-edited header. Add the bundle to `PREFLIGHT_BUNDLES` in `Makefile`, the compatibility-floor and YAML-lint matrices in `.github/workflows/ci.yaml`, and the installer cases in `scripts/test-compatibility-install.sh`. Add its byte-bound entry and a format-2 reader-schema identity with a pinned schema digest to `compatibility/contract.yaml`. Extend compatibility tests for that identity. Compile the bundle, run fixture and schema checks, regenerate diagrams and the catalog, and run preflight. Maintainers sign the resulting published bundle on the PR before merge.
+A new bundle needs compiler, validation and CI integration as well as rule files. Add a bundle-specific case and header emission in `scripts/compile.sh` that produces the complete format-2 header shown below. `make compile` overwrites the selected `published/<bundle-name>/bundle.yaml`; it doesn't preserve a hand-edited header. Add the bundle to `PREFLIGHT_BUNDLES` in `Makefile`, the compatibility-floor and YAML-lint matrices in `.github/workflows/ci.yaml`, and the installer cases in `scripts/test-compatibility-install.sh`. List its `pipelock rules install <bundle-name>` command in the README install section, because `make check-diagrams` rejects a published bundle with no install instructions. Add its byte-bound entry and a format-2 reader-schema identity with a pinned schema digest to `compatibility/contract.yaml`. Extend compatibility tests for that identity. Compile the bundle, run fixture and schema checks, regenerate diagrams and the catalog, and run preflight. Maintainers sign the resulting published bundle on the PR before merge.
 
 The existing validation target installs an unsigned copy under a temporary name. Format-2 bundles need signed validation that preserves their identity, so that path also needs integration before a new bundle can pass preflight.
 
@@ -132,7 +132,7 @@ Use this indentation in source rule files: two spaces before `- id:`, four befor
 - Use RE2 syntax (no lookahead/lookbehind, no backreferences)
 - Prefer specific prefixes over broad character classes (`pplx-[A-Za-z0-9]{16,}` is better than `[a-z]{4}-[A-Za-z0-9]+`)
 - Set minimum match lengths to reduce false positives
-- Test against real-world text, not just isolated tokens
+- Test against realistic surrounding text, not just isolated tokens
 - Case-insensitive matching is applied automatically by pipelock (`(?i)` prefix)
 - Keep regexes readable: prefer `[A-Za-z0-9]` over `\w`.
 - Put one rule in each YAML file.

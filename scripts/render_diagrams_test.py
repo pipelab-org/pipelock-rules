@@ -172,11 +172,9 @@ class PatternSecrecyTest(unittest.TestCase):
     def _every_regex(self) -> list:
         """Every rule pattern in the corpus, read by the production generator.
 
-        The previous version searched the source text for `regex: \'...\'` at a
-        fixed indent. That matches how every rule happens to be written today,
-        which is exactly why it was risky: a double-quoted or block-scalar
-        pattern would be skipped silently and the check would go partial without
-        reporting anything. Parsing sees a pattern however it is quoted.
+        Parsing sees a pattern however it is quoted. Searching source text at a
+        fixed indent would skip a double-quoted or block-scalar pattern without
+        reporting anything.
         """
         return [(rule["id"], generator.regex_of(rule))
                 for bundle in generator.BUNDLES
@@ -429,9 +427,8 @@ class BundleAgreementTest(unittest.TestCase):
         """Two digests leave a reader unable to tell which belongs to the key.
 
         The fixture writes both digests out rather than pointing at a file that
-        happens to contain some. An earlier version swapped in this test module
-        on the assumption it held two, and it holds none, so the test passed by
-        exercising the no-digest branch instead of the one it is named for.
+        happens to contain some, so the test reaches the two-digest branch
+        instead of the no-digest branch.
         """
         first, second = "a" * 64, "b" * 64
         with tempfile.TemporaryDirectory() as directory:
@@ -450,7 +447,7 @@ class BundleAgreementTest(unittest.TestCase):
                 self.assertEqual(generator.readme_key_digest(), only)
 
     def test_a_readme_with_no_digest_pins_nothing(self):
-        """And the zero case, which is what the two-digest test used to cover."""
+        """And the zero case, so the no-digest branch has its own test."""
         with tempfile.TemporaryDirectory() as directory:
             readme = Path(directory) / "README.md"
             readme.write_text("no digest here\n", encoding="utf-8")

@@ -162,7 +162,7 @@ See the [full bundle authoring guide](https://github.com/pipelab-org/pipelock/bl
 
 ## Compatibility contract
 
-CI tests each maintained bundle at its declared `min_pipelock` and at the `tested_through_pipelock` version recorded in `compatibility/contract.yaml`. The matrix doesn't individually test every version between those endpoints. A newer Pipelock version is outside this repository's recorded tested range. The compatibility contract records that range; it doesn't establish whether the running Pipelock version emits a warning about it.
+CI tests each maintained bundle with the declared `min_pipelock` release and with a Pipelock build that reports the `tested_through_pipelock` version recorded in `compatibility/contract.yaml`. The matrix doesn't individually test every version between those endpoints. A newer Pipelock version is outside this repository's recorded tested range. The compatibility contract records that range; it doesn't establish whether the running Pipelock version emits a warning about it.
 
 The contract binds each published bundle's name, CalVer, minimum version, and `format_version` to a SHA-256-pinned reader-schema identity. The two bundles named in the contract add detections. They don't carry per-rule allow or block actions, and they can't replace built-in patterns. Format 1 has no monotonic rollback counter. The installer refuses a same-version digest change.
 

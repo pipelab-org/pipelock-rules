@@ -197,14 +197,13 @@ def lockup() -> str:
     out = _open(w, h, f"{WORDMARK} logo lockup")
     out.append(placed_mark(margin, 10, mark_size))
     # Two-tone wordmark. The accent lands on the word that distinguishes
-    # this project from its parent, matching 'Agent Egress Bench' next door.
+    # this project from Pipelock itself.
     out.append(f'  <text x="{text_x}" y="{baseline}" font-family="{MONO}" font-size="{size}" '
                f'font-weight="700" letter-spacing="{-TRACKING}em" xml:space="preserve">'
                f'<tspan fill="{TEXT}">{WORDMARK_LEAD}</tspan>'
                f'<tspan fill="{ACCENT}">{WORDMARK_ACCENT}</tspan></text>')
     # No tagline. A lockup is a mark and a wordmark; a page that uses it as a
-    # header states the tagline in text directly beneath, and a lockup carrying
-    # its own copy made the header say it twice.
+    # header states the tagline in text directly beneath, so the lockup omits it.
     out.append("</svg>")
     return "\n".join(out) + "\n"
 
@@ -217,10 +216,7 @@ def lockup_stacked() -> str:
     cannot go -- an avatar, an app icon, a centred hero -- where a horizontal
     lockup has to shrink until the wordmark is unreadable.
 
-    The rule against stacking still holds where it was aimed: it forbids
-    breaking the WORDMARK across two lines beside a mark. Here the wordmark
-    stays on one line and the mark sits above it, which is the form Pipelock's
-    own logo already takes.
+    The wordmark stays on one line; only the mark moves above it.
     """
     w, h = 420, 252
     out = _open(w, h, f"{WORDMARK} stacked logo")
@@ -296,11 +292,9 @@ ASSETS = {
 
 # Rasters exported from the vectors above by `make brand`.
 #
-# Every size a consumer has asked for is listed here rather than exported by
-# hand into whatever tool needed it. A hand export is how a logo ends up as a
-# mark stranded in the corner of a canvas: it looks fine in the exporter and
-# renders as a blank square everywhere else, and nothing catches it because the
-# file exists and has plausible bytes.
+# Every raster size is listed here and exported from the vectors, so a size
+# can't exist without a recorded source. A hand export can look correct in one
+# tool and render blank elsewhere, and a file check can't tell the difference.
 ICON_SIZES = (16, 32, 48, 64, 128, 256, 512, 1024)
 ICO_SIZES = (16, 32, 48, 64, 128, 256)
 ICO_NAME = "icons/pipelock-rules.ico"
@@ -462,10 +456,10 @@ def brand_problems() -> list:
     # Check that the social card retains its attribution footer and position.
     card = social_preview()
     if CARD_FOOTER not in card:
-        problems.append("social-preview: missing the family footer line")
+        problems.append("social-preview: missing the attribution footer line")
     if f'x="{CARD_FOOTER_X}"' not in card or f'y="{CARD_FOOTER_Y}"' not in card:
         problems.append(
-            f"social-preview: family footer is not at {CARD_FOOTER_X},{CARD_FOOTER_Y}"
+            f"social-preview: attribution footer is not at {CARD_FOOTER_X},{CARD_FOOTER_Y}"
         )
     return problems
 

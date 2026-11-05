@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Render every README asset from one source, on the PipeLab design system.
+"""Render every README diagram from one source.
 
 The README embeds each diagram twice, through a ``<picture>`` element that
 picks a variant from the reader's color scheme. Two hand-maintained copies of

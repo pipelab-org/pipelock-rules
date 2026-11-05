@@ -2,7 +2,7 @@
 
 ## Reporting a vulnerability
 
-Report exploitable detection bypasses, resource-exhaustion behavior, signature-verification bypasses and rule-distribution supply-chain attacks through [Pipelock Security Advisories](https://github.com/pipelab-org/pipelock/security/advisories/new). Reports with security impact belong there before public disclosure, including false negatives that enable an exploitable bypass.
+Report exploitable detection bypasses, resource-exhaustion behavior, signature-verification bypasses, rule-distribution supply-chain attacks, rules whose matches cause information disclosure and other abuse of a rule or bundle through [Pipelock Security Advisories](https://github.com/pipelab-org/pipelock/security/advisories/new). Reports with security impact belong there before public disclosure, including false negatives that enable an exploitable bypass.
 
 Ordinary false positives, non-exploitable detection gaps and rule-quality suggestions can use the public issue templates. If you're unsure whether a report exposes a vulnerability, start with a private advisory.
 
