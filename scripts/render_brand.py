@@ -456,10 +456,10 @@ def brand_problems() -> list:
     # Check that the social card retains its attribution footer and position.
     card = social_preview()
     if CARD_FOOTER not in card:
-        problems.append("social-preview: missing the attribution footer line")
+        problems.append("social-preview: missing the family footer line")
     if f'x="{CARD_FOOTER_X}"' not in card or f'y="{CARD_FOOTER_Y}"' not in card:
         problems.append(
-            f"social-preview: attribution footer is not at {CARD_FOOTER_X},{CARD_FOOTER_Y}"
+            f"social-preview: family footer is not at {CARD_FOOTER_X},{CARD_FOOTER_Y}"
         )
     return problems
 
