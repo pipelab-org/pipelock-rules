@@ -10,6 +10,21 @@ if [[ ! -r "$OFFICIAL_PUBKEY" ]]; then
 	exit 1
 fi
 EXPECTED_OFFICIAL_PUBKEY_SHA256="${EXPECTED_OFFICIAL_PUBKEY_SHA256:-}"
+TRUSTED_OFFICIAL_PUBKEY_REF="${TRUSTED_OFFICIAL_PUBKEY_REF:-}"
+if [[ -z "$EXPECTED_OFFICIAL_PUBKEY_SHA256" && -n "$TRUSTED_OFFICIAL_PUBKEY_REF" ]]; then
+	# CI supplies the fork PR's target-base SHA from GitHub's event payload.
+	# Read that commit's key, never the PR worktree's key, to establish the pin.
+	if ! trusted_commit="$(git rev-parse --verify --end-of-options "$TRUSTED_OFFICIAL_PUBKEY_REF^{commit}")" ||
+		[[ "$trusted_commit" != "$TRUSTED_OFFICIAL_PUBKEY_REF" ]]; then
+		printf 'ERROR: trusted official key reference must be an available exact commit SHA\n' >&2
+		exit 1
+	fi
+	if ! trusted_digest="$(git show "$trusted_commit:.github/rules-official/pipelock-official.pub" | sha256sum)"; then
+		printf 'ERROR: cannot read the official public key from the trusted base commit\n' >&2
+		exit 1
+	fi
+	read -r EXPECTED_OFFICIAL_PUBKEY_SHA256 _ <<< "$trusted_digest"
+fi
 if [[ -z "$EXPECTED_OFFICIAL_PUBKEY_SHA256" ]]; then
 	printf 'ERROR: EXPECTED_OFFICIAL_PUBKEY_SHA256 is required\n' >&2
 	exit 1
