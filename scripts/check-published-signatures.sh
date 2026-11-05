@@ -11,6 +11,7 @@ if [[ ! -r "$OFFICIAL_PUBKEY" ]]; then
 fi
 EXPECTED_OFFICIAL_PUBKEY_SHA256="${EXPECTED_OFFICIAL_PUBKEY_SHA256:-}"
 TRUSTED_OFFICIAL_PUBKEY_REF="${TRUSTED_OFFICIAL_PUBKEY_REF:-}"
+using_base_pin=false
 if [[ -z "$EXPECTED_OFFICIAL_PUBKEY_SHA256" && -n "$TRUSTED_OFFICIAL_PUBKEY_REF" ]]; then
 	# CI supplies the fork PR's target-base SHA from GitHub's event payload.
 	# Read that commit's key, never the PR worktree's key, to establish the pin.
@@ -24,6 +25,7 @@ if [[ -z "$EXPECTED_OFFICIAL_PUBKEY_SHA256" && -n "$TRUSTED_OFFICIAL_PUBKEY_REF"
 		exit 1
 	fi
 	read -r EXPECTED_OFFICIAL_PUBKEY_SHA256 _ <<< "$trusted_digest"
+	using_base_pin=true
 fi
 if [[ -z "$EXPECTED_OFFICIAL_PUBKEY_SHA256" ]]; then
 	printf 'ERROR: EXPECTED_OFFICIAL_PUBKEY_SHA256 is required\n' >&2
@@ -79,5 +81,42 @@ while IFS= read -r bundle_dir; do
 		status=1
 	fi
 done < <(find rules -mindepth 1 -maxdepth 1 -type d | sort)
+
+if [[ "$using_base_pin" == true && "$status" == 0 ]]; then
+	# Fork runs also require the independent official key embedded in the pinned
+	# Pipelock CLI. A compromised base key alone cannot establish signing trust.
+	python3 - "$OFFICIAL_PUBKEY" "$KEYSTORE_DIR" <<'PY'
+import base64
+import pathlib
+import shutil
+import sys
+
+key_lines = pathlib.Path(sys.argv[1]).read_text().strip().splitlines()
+if len(key_lines) != 2 or key_lines[0] != "pipelock-ed25519-public-v1":
+    raise SystemExit("ERROR: unsupported official public key encoding")
+key = base64.b64decode(key_lines[1], validate=True)
+if len(key) != 32:
+    raise SystemExit("ERROR: official Ed25519 public key must contain 32 bytes")
+root = pathlib.Path(sys.argv[2])
+(root / "official-root.yaml").write_text(
+    "rules:\n  trust_embedded_keys: true\n  trusted_keys: []\n"
+)
+for source in sorted(pathlib.Path("rules").iterdir()):
+    if not source.is_dir():
+        continue
+    stage = root / "official-root" / source.name
+    stage.mkdir(parents=True)
+    for name in ("bundle.yaml", "bundle.yaml.sig"):
+        shutil.copyfile(pathlib.Path("published") / source.name / name, stage / name)
+    (stage / "bundle.lock").write_text(
+        "unsigned: false\nsigner_fingerprint: " + key.hex() + "\n"
+    )
+PY
+	if ! pipelock rules verify --config "$KEYSTORE_DIR/official-root.yaml" \
+		--rules-dir "$KEYSTORE_DIR/official-root"; then
+		printf 'ERROR: fork bundles must verify against the pinned CLI official keyring\n' >&2
+		status=1
+	fi
+fi
 
 exit "$status"
