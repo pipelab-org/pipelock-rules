@@ -101,9 +101,14 @@ root = pathlib.Path(sys.argv[2])
 (root / "official-root.yaml").write_text(
     "rules:\n  trust_embedded_keys: true\n  trusted_keys: []\n"
 )
+staged = 0
 for source in sorted(pathlib.Path("rules").iterdir()):
     if not source.is_dir():
         continue
+    # rules verify skips these names and exits 0, so they would escape the check.
+    if source.name.startswith(".") or source.name.endswith(".bak"):
+        raise SystemExit("ERROR: bundle name %r is skipped by rules verify" % source.name)
+    staged += 1
     stage = root / "official-root" / source.name
     stage.mkdir(parents=True)
     for name in ("bundle.yaml", "bundle.yaml.sig"):
@@ -111,6 +116,9 @@ for source in sorted(pathlib.Path("rules").iterdir()):
     (stage / "bundle.lock").write_text(
         "unsigned: false\nsigner_fingerprint: " + key.hex() + "\n"
     )
+if staged == 0:
+    # rules verify reports success when it finds no bundles.
+    raise SystemExit("ERROR: no bundles staged for the embedded keyring check")
 PY
 	if ! pipelock rules verify --config "$KEYSTORE_DIR/official-root.yaml" \
 		--rules-dir "$KEYSTORE_DIR/official-root"; then

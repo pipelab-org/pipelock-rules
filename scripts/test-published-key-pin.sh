@@ -16,6 +16,28 @@ git -c user.name=Fixture -c user.email=fixture@example.invalid commit -qm 'Seed 
 base="$(git rev-parse HEAD)"
 read -r expected _ < <(sha256sum .github/rules-official/pipelock-official.pub)
 
+# Let the generic keystore verification succeed, while keeping the real CLI for
+# verification against its embedded key. One bundle must exist: the embedded-key
+# step refuses to pass on none.
+mkdir -p rules/healthcare-phi-pii published/healthcare-phi-pii bin
+cp "$ROOT_DIR/published/healthcare-phi-pii/bundle.yaml" published/healthcare-phi-pii/
+cp "$ROOT_DIR/published/healthcare-phi-pii/bundle.yaml.sig" published/healthcare-phi-pii/
+TEST_REAL_PIPELOCK="$(command -v pipelock)"
+export TEST_REAL_PIPELOCK
+cat >bin/pipelock <<'SH'
+#!/usr/bin/env bash
+if [[ "$1" == verify ]]; then
+	exit 0
+fi
+exec "$TEST_REAL_PIPELOCK" "$@"
+SH
+cat >bin/make <<'SH'
+#!/usr/bin/env bash
+exit 0
+SH
+chmod +x bin/pipelock bin/make
+export PATH="$TMP_DIR/bin:$PATH"
+
 expect_pass() {
 	if ! env EXPECTED_OFFICIAL_PUBKEY_SHA256="$1" TRUSTED_OFFICIAL_PUBKEY_REF="$2" \
 		bash scripts/check-published-signatures.sh >case.log 2>&1; then
@@ -53,28 +75,17 @@ printf 'untrusted replacement public key\n' >.github/rules-official/pipelock-off
 expect_fail '' "$base" 'worktree key substitution with unavailable configuration' 'digest mismatch'
 expect_fail "$expected" "$base" 'worktree key substitution with configured digest' 'digest mismatch'
 
-# Isolate the independent keyring check: let the generic keystore verification
-# succeed, while keeping the real CLI for verification against its embedded key.
+# Isolate the independent keyring check against the real embedded key.
 cp "$ROOT_DIR/.github/rules-official/pipelock-official.pub" .github/rules-official/
-mkdir -p rules/healthcare-phi-pii published/healthcare-phi-pii bin
-cp "$ROOT_DIR/published/healthcare-phi-pii/bundle.yaml" published/healthcare-phi-pii/
-cp "$ROOT_DIR/published/healthcare-phi-pii/bundle.yaml.sig" published/healthcare-phi-pii/
-TEST_REAL_PIPELOCK="$(command -v pipelock)"
-export TEST_REAL_PIPELOCK
-cat >bin/pipelock <<'SH'
-#!/usr/bin/env bash
-if [[ "$1" == verify ]]; then
-	exit 0
-fi
-exec "$TEST_REAL_PIPELOCK" "$@"
-SH
-cat >bin/make <<'SH'
-#!/usr/bin/env bash
-exit 0
-SH
-chmod +x bin/pipelock bin/make
-export PATH="$TMP_DIR/bin:$PATH"
 expect_pass '' "$base" 'valid official bundle with an independent embedded keyring'
+# The CLI skips hidden and .bak bundle dirs and succeeds on none, so refuse both.
+mkdir -p rules/x.bak published/x.bak
+cp published/healthcare-phi-pii/bundle.yaml* published/x.bak/
+expect_fail '' "$base" 'bundle name the CLI would skip' 'is skipped by rules verify'
+rm -rf rules/x.bak published/x.bak
+mv rules/healthcare-phi-pii "$TMP_DIR/stash"
+expect_fail '' "$base" 'no bundles for the embedded keyring check' 'no bundles staged'
+mv "$TMP_DIR/stash" rules/healthcare-phi-pii
 printf '\nmodified fixture bytes\n' >>published/healthcare-phi-pii/bundle.yaml
 expect_fail '' "$base" 'embedded keyring rejects bytes even when keystore verification passes' \
 	'fork bundles must verify against the pinned CLI official keyring'
