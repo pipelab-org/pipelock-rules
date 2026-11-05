@@ -118,6 +118,7 @@ jobs:
     timeout-minutes: 5
     env:
       EXPECTED_OFFICIAL_PUBKEY_SHA256: ${{ vars.RULES_OFFICIAL_PUBKEY_SHA256 }}
+      TRUSTED_OFFICIAL_PUBKEY_REF: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name != github.repository && github.event.pull_request.base.sha || '' }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
         with:
@@ -150,6 +151,7 @@ jobs:
         env:
           BASE_REF: ${{ github.event.pull_request.base.sha || github.event.before }}
         run: |
+          scripts/test-published-key-pin.sh
           scripts/test-version-bumps.sh
           scripts/check-version-bumps.sh "$BASE_REF"
           scripts/check-published-signatures.sh

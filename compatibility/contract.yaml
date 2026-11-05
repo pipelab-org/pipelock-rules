@@ -6,8 +6,8 @@ format_identities:
     reader: "Pipelock strict bundle reader (format_version: 1)"
 bundles:
   - name: pipelock-community
-    version: "2026.07.0"
-    bundle_sha256: "f4c63c73e9e06c69745b03f9720c6d3940c9323b5821c189a28e59f609e076de"
+    version: "2026.10.0"
+    bundle_sha256: "8becd2727bf9e620ab2f8231b74d4b7eb1b5630360456d2949e922b9a2f9807d"
     format_version: 1
     min_pipelock: "1.4.0"
     tested_through_pipelock: "3.6.0"
