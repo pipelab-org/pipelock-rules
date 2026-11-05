@@ -1,6 +1,6 @@
 #!/bin/bash
 # Compile individual rule YAML files into a single bundle.yaml.
-# Rules are sorted by type then ID for deterministic output.
+# Rules are emitted in dlp, injection, tool-poison order, then by sorted filename.
 set -euo pipefail
 
 BUNDLE_NAME="${BUNDLE_NAME:-pipelock-community}"

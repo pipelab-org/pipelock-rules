@@ -47,10 +47,9 @@ check-diagrams:
 	@PYTHONDONTWRITEBYTECODE=1 python3 -m unittest scripts/render_diagrams_test.py
 	@python3 scripts/render_diagrams.py --check
 
-# The compatibility contract is separate from the signed v1 bundle bytes: v1
-# rejects a max_pipelock field, while current Pipelock has no runtime warning
-# surface for a tested ceiling. Validate the bound format identity, then prove
-# the installed reader accepts the declared shape and rejects incompatible ones.
+# The compatibility contract is separate from the signed v1 bundle bytes,
+# which reject a max_pipelock field. Validate the bound format identity, then
+# prove the installed reader accepts the shape and rejects incompatible ones.
 check-compatibility: require-pipelock
 	@PYTHONDONTWRITEBYTECODE=1 python3 -m unittest scripts/test-compatibility-contract.py
 	@python3 scripts/check-compatibility-contract.py
