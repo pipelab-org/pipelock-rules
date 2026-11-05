@@ -25,20 +25,31 @@ expect_pass() {
 	fi
 }
 
+# Each refusal must fail for its own reason, so a different guard can't mask it.
 expect_fail() {
 	if env EXPECTED_OFFICIAL_PUBKEY_SHA256="$1" TRUSTED_OFFICIAL_PUBKEY_REF="$2" \
 		bash scripts/check-published-signatures.sh >case.log 2>&1; then
 		printf 'FAIL: %s unexpectedly succeeded\n' "$3" >&2
 		exit 1
 	fi
+	if ! grep -qF -- "$4" case.log; then
+		cat case.log >&2
+		printf 'FAIL: %s failed without the expected reason: %s\n' "$3" "$4" >&2
+		exit 1
+	fi
 }
 
 expect_pass "$expected" '' 'configured digest'
 expect_pass '' "$base" 'trusted base pin when configuration is unavailable'
-expect_fail '' '' 'missing configuration and trusted base'
-expect_fail '' HEAD 'symbolic reference instead of exact base commit'
-expect_fail '' 0000000000000000000000000000000000000000 'unavailable base commit'
+expect_fail '' '' 'missing configuration and trusted base' 'EXPECTED_OFFICIAL_PUBKEY_SHA256 is required'
+expect_fail '' HEAD 'symbolic reference instead of exact base commit' 'exact commit SHA'
+expect_fail '' 0000000000000000000000000000000000000000 'unavailable base commit' 'exact commit SHA'
+expect_fail 0000000000000000000000000000000000000000000000000000000000000000 "$base" \
+	'configured digest must stay primary over the trusted base' 'digest mismatch'
+git rm -q --cached .github/rules-official/pipelock-official.pub
+git -c user.name=Fixture -c user.email=fixture@example.invalid commit -qm 'Drop public-key fixture'
+expect_fail '' "$(git rev-parse HEAD)" 'trusted base commit without an official key' 'cannot read the official public key'
 printf 'untrusted replacement public key\n' >.github/rules-official/pipelock-official.pub
-expect_fail '' "$base" 'worktree key substitution with unavailable configuration'
-expect_fail "$expected" "$base" 'worktree key substitution with configured digest'
+expect_fail '' "$base" 'worktree key substitution with unavailable configuration' 'digest mismatch'
+expect_fail "$expected" "$base" 'worktree key substitution with configured digest' 'digest mismatch'
 printf 'published key pin: PASS (configured pin, trusted-base pin, missing input and substitution refusals)\n'
