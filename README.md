@@ -11,7 +11,7 @@
   <a href="https://github.com/pipelab-org/pipelock-rules/actions/workflows/codeql.yaml"><img src="https://github.com/pipelab-org/pipelock-rules/actions/workflows/codeql.yaml/badge.svg" alt="CodeQL"></a>
   <a href="https://github.com/pipelab-org/pipelock-rules/actions/workflows/pipelock.yaml"><img src="https://github.com/pipelab-org/pipelock-rules/actions/workflows/pipelock.yaml/badge.svg" alt="Pipelock Security Scan"></a>
   <a href="https://scorecard.dev/viewer/?uri=github.com/pipelab-org/pipelock-rules"><img src="https://api.scorecard.dev/projects/github.com/pipelab-org/pipelock-rules/badge" alt="OpenSSF Scorecard"></a>
-  <a href="https://github.com/pipelab-org/pipelock"><img src="https://img.shields.io/badge/tested_with_Pipelock-v3.6.0-00e5a0?labelColor=0e0e11" alt="Tested with Pipelock v3.6.0"></a>
+  <a href="https://github.com/pipelab-org/pipelock"><img src="https://img.shields.io/badge/tested_with_Pipelock-v3.8.0-00e5a0?labelColor=0e0e11" alt="Tested with Pipelock v3.8.0"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-Apache_2.0-00e5a0?labelColor=0e0e11" alt="License: Apache 2.0"></a>
   <a href="https://discord.gg/badNfhGKTc"><img src="https://img.shields.io/badge/Discord-Join-5865F2?logo=discord&logoColor=white&labelColor=0e0e11" alt="Discord"></a>
 </p>

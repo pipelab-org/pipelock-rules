@@ -10,7 +10,7 @@ bundles:
     bundle_sha256: "8becd2727bf9e620ab2f8231b74d4b7eb1b5630360456d2949e922b9a2f9807d"
     format_version: 1
     min_pipelock: "1.4.0"
-    tested_through_pipelock: "3.6.0"
+    tested_through_pipelock: "3.8.0"
     semantics: "adds community bundle detection patterns; contains no per-rule action and cannot replace core, standard, or other bundle patterns"
     rollback: "install refuses a same-version different digest; format 1 has no runtime monotonic rollback counter"
   - name: healthcare-phi-pii
@@ -18,6 +18,6 @@ bundles:
     bundle_sha256: "74cc0cb579795c7d2cdff523170aaf3874c47dbc70f349673cf504dee11c639c"
     format_version: 1
     min_pipelock: "1.5.0"
-    tested_through_pipelock: "3.6.0"
+    tested_through_pipelock: "3.8.0"
     semantics: "adds healthcare bundle detection patterns; contains no per-rule action and cannot replace core, standard, or other bundle patterns"
     rollback: "install refuses a same-version different digest; format 1 has no runtime monotonic rollback counter"

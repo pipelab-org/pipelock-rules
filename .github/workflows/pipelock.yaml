@@ -32,9 +32,9 @@ jobs:
       # sample of the thing being detected. Scanning them reports the corpus as
       # findings, which is the scanner working, not a defect to fix.
       - name: Pipelock Scan
-        uses: pipelab-org/pipelock@47c14c59b14f835f53971d22941b556f44f2baa0 # v3.7.0
+        uses: pipelab-org/pipelock@556048c1c18d84f7d61d28f686220178a4ff2c4d # v3.8.0
         with:
-          version: '3.6.0'
+          version: '3.8.0'
           scan-diff: 'true'
           fail-on-findings: 'true'
           test-vectors: 'false'
