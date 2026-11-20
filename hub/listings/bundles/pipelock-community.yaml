@@ -1,0 +1,30 @@
+schema_version: 1
+type: bundle
+id: pipelock-community
+bundle_name: pipelock-community
+bundle_sha256: 8becd2727bf9e620ab2f8231b74d4b7eb1b5630360456d2949e922b9a2f9807d
+signer_fingerprint: 7051d8082f3a369886d25e847e3827b4b4263f9d28cb070104b606c9fb07ae82
+title: Pipelock Community Rule Pack
+summary: Community detection rules for Pipelock covering secret patterns, prompt
+  injection, and tool descriptions.
+maintainer:
+  name: PipeLab
+  github: pipelab-org
+license: Apache-2.0
+evidence:
+  date: 2026-11-18
+  pipelock_version: 3.7.1
+  method: Pinned reader and signed bundle verification
+setup:
+  - text: Install this official pack from the Pipelock registry.
+    command: pipelock rules install pipelock-community
+limitations:
+  - Rules apply only on the surfaces enabled by your Pipelock configuration.
+not_claimed:
+  - A rule pack cannot establish regulatory compliance.
+links:
+  source: https://github.com/pipelab-org/pipelock-rules/tree/main/published/pipelock-community
+disclosures:
+  ai_assisted: true
+  ai_text: AI assisted with drafting this listing.
+  conflict_of_interest: PipeLab publishes this pack.
