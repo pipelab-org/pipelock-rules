@@ -1,0 +1,46 @@
+name: Hub contribution eligibility
+
+on:
+  pull_request:
+    branches: [main]
+    paths: ['hub/**']
+
+permissions:
+  contents: read
+
+jobs:
+  eligibility:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Get the site eligibility checker
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
+        with:
+          repository: pipelab-org/pipelab.org
+          ref: ea5c1cb74911a9cd876647f041ccb48343a415c8
+          persist-credentials: false
+      - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
+        with:
+          node-version: 22
+      - run: npm ci --ignore-scripts
+      - name: Check the submitted Hub data
+        env:
+          HUB_RULES_PUBLIC_API: "1"
+          RULES_PR: ${{ github.event.pull_request.number }}
+          RULES_BASE: ${{ github.event.pull_request.base.sha }}
+          RULES_HEAD: ${{ github.event.pull_request.head.sha }}
+        run: |
+          report="$RUNNER_TEMP/hub-eligibility.json"
+          status=0
+          node scripts/hub/contribution-preflight.mjs --fetch-pr "$RULES_PR" "$RULES_BASE" "$RULES_HEAD" > "$report" || status=$?
+          if [[ -s "$report" ]]; then
+            verdict="$(jq -r '.verdict' "$report")"
+            case "$status:$verdict" in
+              0:LOCAL-ELIGIBLE|1:REFUSED|3:UNAVAILABLE) printf 'Hub eligibility: %s\n' "$verdict" ;;
+              *) printf '%s\n' 'Unexpected eligibility result.' >&2; exit 1 ;;
+            esac
+          else
+            printf '%s\n' 'No eligibility report was produced.' >&2
+            exit 1
+          fi
+          exit "$status"

@@ -33,3 +33,10 @@ Brief description of what this PR adds or changes.
 - [ ] False-positive fixture added (stable rules)
 - [ ] Primary source citation included (stable rules)
 - [ ] Rule ID follows naming convention (`{type}-{provider/technique}`)
+
+## Hub contributions
+
+For a Hub-only change, fill in the admission run URL and the full pull request head SHA. The run must report `ADMIT` from site `main` for that exact SHA. Run admission again after any change to the head.
+
+- Admission run URL
+- Pull request head SHA
