@@ -1,0 +1,30 @@
+schema_version: 1
+type: bundle
+id: healthcare-phi-pii
+bundle_name: healthcare-phi-pii
+bundle_sha256: 74cc0cb579795c7d2cdff523170aaf3874c47dbc70f349673cf504dee11c639c
+signer_fingerprint: 7051d8082f3a369886d25e847e3827b4b4263f9d28cb070104b606c9fb07ae82
+title: Healthcare PHI and PII Rule Pack
+summary: Healthcare detection rules for Pipelock covering labeled records and
+  common forms of personal information.
+maintainer:
+  name: PipeLab
+  github: pipelab-org
+license: Apache-2.0
+evidence:
+  date: 2026-11-18
+  pipelock_version: 3.7.1
+  method: Pinned reader and signed bundle verification
+setup:
+  - text: Install this official pack from the Pipelock registry.
+    command: pipelock rules install healthcare-phi-pii
+limitations:
+  - Rules apply only on the surfaces enabled by your Pipelock configuration.
+not_claimed:
+  - A rule pack cannot establish regulatory compliance.
+links:
+  source: https://github.com/pipelab-org/pipelock-rules/tree/main/published/healthcare-phi-pii
+disclosures:
+  ai_assisted: true
+  ai_text: AI assisted with drafting this listing.
+  conflict_of_interest: PipeLab publishes this pack.
