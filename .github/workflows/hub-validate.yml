@@ -43,4 +43,14 @@ jobs:
             printf '%s\n' 'No eligibility report was produced.' >&2
             exit 1
           fi
+          if (( status != 0 )); then
+            {
+              printf '%s\n\n' '### Hub eligibility details'
+              jq -r '
+                (.steps // {}) | to_entries[]
+                | select(.value.status == "fail")
+                | "    \({check: .key, reason: .value.evidence} | @json)"
+              ' "$report"
+            } >> "$GITHUB_STEP_SUMMARY"
+          fi
           exit "$status"
