@@ -36,7 +36,7 @@ Brief description of what this PR adds or changes.
 
 ## Hub contributions
 
-For a [Hub-only change](https://github.com/pipelab-org/pipelock-rules/blob/main/docs/hub-contributions.md), fill in the admission run URL and the full pull request head SHA. The run must report `ADMIT` from site `main` for that exact SHA. Run admission again after any change to the head or to this description.
+For a [Hub-only change](https://github.com/pipelab-org/pipelock-rules/blob/main/docs/hub-contributions.md), fill in the admission run URL and the full pull request head SHA. The run must report `ADMIT` from site `main` for that exact SHA. Run admission again after any change to the head, or if the contributor terms box below is unchecked or edited after the run. Filling in the run URL and SHA does not need a new run.
 
 - Admission run URL
 - Pull request head SHA
