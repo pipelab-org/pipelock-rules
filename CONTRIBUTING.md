@@ -158,6 +158,10 @@ Use this indentation in source rule files: two spaces before `- id:`, four befor
 
 Fork the repository, create a branch such as `feat/new-rule-name` or `fix/rule-id`, and follow [Contributing Rules to an Existing Bundle](#contributing-rules-to-an-existing-bundle) before opening a pull request.
 
+## Hub Community Packs
+
+A community pack under Apache-2.0, MIT, BSD-2-Clause, BSD-3-Clause, ISC, 0BSD or CC0-1.0 needs a `LICENSE` file with that license's complete standard text, plus any required `NOTICE`. A pack under any other OSI-approved SPDX license needs a maintainer approval recorded in `hub/license-approvals.yaml` through a separate pull request before the pack pull request. A contribution pull request that touches that file is refused. See [Hub contributions](docs/hub-contributions.md#community-pack-licenses) for the approval format.
+
 ## Contributor License Agreement
 
 By submitting a pull request, you agree that your contributions are licensed under the [Apache License 2.0](LICENSE), the same license as this project.
