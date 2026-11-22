@@ -164,7 +164,13 @@ A community pack under Apache-2.0, MIT, BSD-2-Clause, BSD-3-Clause, ISC, 0BSD or
 
 ## Contributor License Agreement
 
-By submitting a pull request, you agree that your contributions are licensed under the [Apache License 2.0](LICENSE), the same license as this project.
+Contributions to the maintained rules bundles are licensed under the [Apache License 2.0](LICENSE), the same license as this project. For Hub submissions, listing text, recipes and configurations are contributed under Apache-2.0, and third-party rule-pack files keep their declared license. You must have the rights to submit the material and grant the applicable rights.
+
+A Hub pull request must also include this line, checked, in its description. It is in the pull request template, and Hub admission refuses the pull request until it is checked:
+
+```text
+- [x] I agree to the PipeLab Terms of Service (https://pipelab.org/terms/) and Hub policies (https://pipelab.org/hub/policies/). I have the rights to submit this material, and the pack files keep their declared license.
+```
 
 ## Security
 
