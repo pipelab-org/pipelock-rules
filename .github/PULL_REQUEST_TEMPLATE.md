@@ -40,3 +40,7 @@ For a [Hub-only change](https://github.com/pipelab-org/pipelock-rules/blob/main/
 
 - Admission run URL
 - Pull request head SHA
+
+Hub admission requires this box to be checked. Leave the wording unchanged.
+
+- [ ] I agree to the PipeLab Terms of Service (https://pipelab.org/terms/) and Hub policies (https://pipelab.org/hub/policies/). I have the rights to submit this material, and the pack files keep their declared license.
