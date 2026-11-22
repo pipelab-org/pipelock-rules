@@ -4,7 +4,7 @@ The `hub/` directory holds listing metadata and other contribution data for the 
 
 Keep changes under `hub/` in their own pull request. Check the contributor terms box in the pull request template without changing its wording. Admission refuses a Hub pull request until that box is checked. For an official pack, add the listing under `hub/listings/bundles/` and bind it to the digest of the exact bundle served by the PipeLab registry. Leave edits to the signed bundle and its fixtures in the regular Rules workflow.
 
-The advisory check reports whether the submission is eligible for admission. A maintainer runs admission from the PipeLab site repository and checks that the resulting report says `ADMIT` for the current pull request head before approving a merge.
+The advisory check reports whether the submission is eligible for admission. A maintainer runs admission from the PipeLab site repository and checks that the resulting report says `ADMIT` for the current pull request head, and that the contributor terms box is still checked, before approving a merge. A description edit after the admission run needs a new run.
 
 ## Community pack licenses
 
